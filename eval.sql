@@ -110,3 +110,16 @@ CREATE TABLE Bookings
     FOREIGN KEY (id_movie_theatres) REFERENCES MovieTheatres (id),
     FOREIGN KEY (id_payment) REFERENCES Payment (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+-- Insertion des scripts  d'alimentation factice de données dans la base
+
+INSERT INTO Administrator ( name, First_name) VALUES ('Soumare' , 'Demba' ) , ('Serralongue' , 'Frank') , ('Dupont' , 'Michel') , ('Martin' , 'Yves') ;
+
+INSERT INTO Infos (phone , address, postal_code , city , id_administrator ) VALUES ('0140365522' , '1 rue Buisson ' , '75019' , 'Paris' , '1') , ( '0140365522' , '38 rue Marx Dormoy ' , '75018 , 'Paris' , '2' )  , ('01487909673' , '7 route des Tarnes' , '75010' , 'Paris' , '3') , ('0143090807' , '9 Rue Montesquieu' , '75005' , 'Paris' , '4')  ;
+
+INSERT INTO CinemaComplex (name , id_info )  VALUES ( 'Pathé Weber Paris17' , '1' ) , ( 'Pathé Weber Paris20' , '2' ) , ( 'Pathé Weber Paris14' , '3' ) , ( 'Pathé Weber Paris09' , '4' ) ;
+
+INSERT INTO Halls (type_hall) VALUES  ( 'Privé') , ('Confort') , ('Classique') , ('3d') ;
+
+INSERT INTO MovieTheatres
+( number_halls , nbr_places , id_complex , id_type_hall )
