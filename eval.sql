@@ -171,8 +171,75 @@ VALUES
 ('Megalodon' , '01:50:00' , 'Jeff Martinez', '13' ) ;
 
 
+INSERT INTO Bookings ( id , start_time , id_customer , id_movie , id_movie_theatres  , id_payment)
+VALUES
+(UUID() , '2021-09-19 08:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '2' , '40'  , '1') ,
+(UUID() , '2021-00-19 08:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '2' , '40' , '21' ) ,
+(UUID() , '2021-09-19 08:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '2' , '10', '1'  ) ,
+(UUID() , '2021-09-19 08:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '2' , '1' ,'25' ) ,
+(UUID() , '2021-09-19 08:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '9' , '4' , '11' ) ,
+(UUID() , '2021-09-19 12:40:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '9' , '9' , '23' ) ,
+(UUID() , '2021-09-19 15:30:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '3' , '13'  , '13') ,
+(UUID() , '2021-09-19 17:30:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '13' , '4' , '10' ) ,
+(UUID() , '2021-09-19 20:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '1' , '1' , '13' ) ,
+(UUID() , '2021-09-19 22:00:00' , 'ef34pdee-aw1c-24ac-aabb-23455cb14ai2' , '7' , '7' , '22' ) ;
+
+
 INSERT INTO Payment (type_payment)
 VALUES ('In place '), ('Online') ;
 
 INSERT INTO PriceList ( type_price , price)
 VALUES ('full price' , 11.40 ) , ('student' , 8.10 ) , ('under 12 years' , 4.50) ;
+
+
+-- Requêtes sql qui montre que la BDD est fiable par rapport au exigences du client 
+
+
+-- Par le numéro de réservation 'on peut reserver un film de notre choix dans plusieurs cinémas
+SELECT bookings.id  AS 'Numéro de reservation' , Movies.name AS 'Nom du film' , CinemaArea.name AS 'Area cinema'
+FROM Bookings
+JOIN Movies ON Movies.id = Bookings.id_movie
+JOIN MovieTheatres ON  MovieTheatres.id = Bookings.id_movie_theatres
+JOIN CinemaComplex ON MovieTheatres.id_complex = CinemaArea.id
+ORDER BY CinemaArea.name ;
+
+-- On peut analyser des résa avec le meme film du meme cinema mais non de la meme salle
+SELECT bookings.id  AS 'Numero de reservation' , Bookings.start_time , Movies.name AS 'Nom du film' , CinemaArea.name AS 'Area cinema' , MovieTheatres.number_halls AS 'Numéro de salle '
+FROM Bookings
+JOIN Movies ON Movies.id = Bookings.id_movie
+JOIN MovieTheatres ON  MovieTheatres.id = Bookings.id_movie_theatres
+JOIN CinemaComplex ON MovieTheatres.id_complex = CinemaArea.id
+ORDER BY Bookings.start_time  ;
+
+
+--  calcule le nombre d'emplacement qui reste dans une salle pour la séance
+SELECT CinemaArea.name AS 'Nom du cinéma' , MovieTheatres.number_halls AS 'Numéro de salle' , MovieTheatres.nbr_places AS 'Nombre de place total' , count(Bookings.id_movie_theatres) AS 'Nombre de réservation' , MovieTheatres.nbr_places - count(Bookings.id_movie_theatres) AS 'Places restant'
+FROM Bookings
+JOIN MovieTheatres ON Bookings.id_movie_theatres = MovieTheatres.id
+JOIN CinemaArea  ON MovieTheatres.id_complex = CinemaComplex.id
+GROUP BY MovieTheatres.id ;
+
+--  tarifs
+SELECT *
+FROM Payment
+
+-- Table pour le paiement de la place sur place ou en ligne
+SELECT Bookings.id AS 'Numéro de réservation' , CONCAT(Customers.name , ' ' , Customers.first_name) AS 'Nom et Prénom du client' , Payment.type_payment 'Choix du paiement'
+FROM Bookings
+JOIN Customers ON Bookings.id_customer = Customers.id
+JOIN Payment ON Bookings.id_payment = Payment.id ;
+
+-- Tabe qui permet de savoir qui est l'admin du cinéma
+SELECT CinemaArea.name 'Nom du cinéma' ,  CONCAT(Administrator.name,  ' ' , Administrator.First_name) AS 'Nom Prenom'
+FROM CinemaArea
+JOIN infos ON CinemaArea.id_info = Infos.id
+JOIN Administrator ON Infos.id_administrator = Administrator.id ;
+
+
+
+
+-- Utilisation d'un utilitaire de sauvegarde de la base de données 
+mysqldump -u root -p root -h localhost:3006 > eval.sql
+
+--Utilisation d'un utilitaire de restauration de la base de données (je ne recrée pas la base de données, car le serveur la comportait déjà)
+mysql -h localhost:3006 -u root -p root reservation_place_cinema < eval.sql
