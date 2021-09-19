@@ -111,7 +111,7 @@ CREATE TABLE Bookings
     FOREIGN KEY (id_payment) REFERENCES Payment (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
--- Insertion des scripts  d'alimentation factice de données dans la base
+-- Insertion des scripts dans la base de donnée (fictif)
 
 INSERT INTO Administrator ( name, First_name) VALUES ('Soumare' , 'Demba' ) , ('Serralongue' , 'Frank') , ('Dupont' , 'Michel') , ('Martin' , 'Yves') ;
 
@@ -123,3 +123,56 @@ INSERT INTO Halls (type_hall) VALUES  ( 'Privé') , ('Confort') , ('Classique') 
 
 INSERT INTO MovieTheatres
 ( number_halls , nbr_places , id_complex , id_type_hall )
+
+VALUES 
+
+('1', '10', '3', '3') ,
+('2', '40', '3', '2') ,
+('3', '50', '3', '5') ,
+('4', '60', '3', '1') ,
+('5', '22', '3', '4') ,
+('6', '30', '3', '4') ,
+
+('1', '70', '2', '2') ,
+('2', '25', '2', '2') ,
+('3', '45', '2', '3') ,
+('4', '18', '2', '1') ,
+('5', '2', '2', '2') ,
+('6', '76', '2', '4') ,
+
+('1', '34', '2', '1') ,
+('2', '40', '3', '3') ,
+('3', '45', '3', '2') ,
+('4', '2', '1', '4') ,
+('5', '18', '2', '1') ,
+('6', '28', '3', '3') ,
+
+('1', '87', '6', '4') ,
+('2', '98', '7', '4') ,
+('3', '67', '5', '3') ,
+('4', '38', '5', '3') ,
+('5', '3', '5', '1') ,
+('6', '19', '4', '2') ;
+
+INSERT INTO Genre (libelle)
+VALUES ('Action') ,('Comedy') ,('Drama') ,('Aninamtion') ,('Drama') ,('Suspence') ,('Fantastic') ,('Horror')  ,('action movie')  ,('Policier') , ('Romance');
+
+INSERT INTO Movies ( name , time , director , id_genre )
+VALUES
+('Conjuring 2' , '02:30:00' , 'markus dems', '1' ) ,
+('Casa Del Papel' , '01:50:00' , 'Giuessepe Mielsa', '3' ) ,
+('Alien 6' , '02:40:00' , 'Michael Douglas', '4' ) ,
+('Dragon Ball Z revolution' , '02:00:00' , 'Aikido Fuqushima', '5' ) ,
+('Resident Evil 8' , '01:45:00' , ' Marc Landers', '5' ) ,
+('Blanche neige et les 7 nains' , '01:57:00' , 'Matt Hopkins,', '12' ) ,
+('La colline a des yeux' , '02:40:00' , ' Arthur Rodriguez', '14' ) ,
+('Le seigneur des anneaux 3' , '03:49:00' , 'Ben Sheffer', '1' ) ,
+('Kirikou' , '01:34:00' , 'Fatou Ndiaye', '2' ) ,
+('Megalodon' , '01:50:00' , 'Jeff Martinez', '13' ) ;
+
+
+INSERT INTO Payment (type_payment)
+VALUES ('In place '), ('Online') ;
+
+INSERT INTO PriceList ( type_price , price)
+VALUES ('full price' , 11.40 ) , ('student' , 8.10 ) , ('under 12 years' , 4.50) ;
