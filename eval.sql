@@ -216,8 +216,9 @@ ORDER BY Bookings.start_time  ;
 SELECT CinemaArea.name AS 'Nom du cinéma' , MovieTheatres.number_halls AS 'Numéro de salle' , MovieTheatres.nbr_places AS 'Nombre de place total' , count(Bookings.id_movie_theatres) AS 'Nombre de réservation' , MovieTheatres.nbr_places - count(Bookings.id_movie_theatres) AS 'Places restant'
 FROM Bookings
 JOIN MovieTheatres ON Bookings.id_movie_theatres = MovieTheatres.id
-JOIN CinemaArea  ON MovieTheatres.id_complex = CinemaComplex.id
+JOIN CinemaArea  ON MovieTheatres.id_complex = CinemaComplex.id‘
 GROUP BY MovieTheatres.id ;
+
 
 --  tarifs
 SELECT *
